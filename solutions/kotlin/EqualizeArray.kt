@@ -1,17 +1,31 @@
-fun countingValleys(steps: Int, path: String): Int {
-    var currentLevel = 0 // starts at sea level
-    var valleys = 0
 
-    for(step in path){
-        if(step == 'U' && currentLevel == -1){
-            valleys++
+// probably there's a way to do this using chuncked method, but I could think in a way until now
+// https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/chunked.html
+fun equalizeArray(arr: Array<Int>): Int {
+    arr.sort()
+    
+    var lastEl = 0
+    var biggerCount = 0
+    var currentCount = 0
+    
+    for(i in arr.indices){
+        if (i == 0){
+            lastEl = arr[i]
+            currentCount = 1
+            continue
         }
-        if(step == 'D'){
-            currentLevel--
+        if(arr[i] == lastEl){
+            currentCount++
+            if(i == arr.size - 1 && biggerCount < currentCount){
+                biggerCount = currentCount
+            }
         }else{
-            currentLevel++
+            if(biggerCount < currentCount){
+                biggerCount = currentCount
+            }
+            lastEl = arr[i]
+            currentCount = 1
         }
     }
-
-    return valleys
+    return arr.size - biggerCount
 }
